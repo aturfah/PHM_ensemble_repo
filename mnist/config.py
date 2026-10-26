@@ -8,34 +8,16 @@ os.environ["NUMEXPR_NUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 
-from pathlib import path
-
 ## Imports
-from functools import partial
-from copy import deepcopy
 from pathlib import Path
-import plotnine as p9
-
-import numpy as np
-import pandas as pd
-
-from sklearn.neighbors import KDTree
-from mclustpy import mclustpy
-
-## PHM Imports
-from PHM import PHM
-from PHMCluster import PHMCluster, deltaPmc
-from distbn_helpers import mvgmm_generator
-
-## Rpy2 imports for running R code
-import rpy2
-import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
-from rpy2.robjects import numpy2ri
-from rpy2.robjects.conversion import localconverter
+
+## R imports
+r_mclust = importr('mclust')
+r_phm = importr('PHM')
 
 ## File directories
-file_directory = Path("/nfs/turbo/sph-xwen/aturfah/consensus/MNIST_test/data/")
+file_directory = Path("output/")
 raw_path = file_directory.joinpath("MNIST_raw_70k.npy")
 labels_path = file_directory.joinpath("MNIST_labels_70k.npy")
 pca_path = file_directory.joinpath("MNIST_pca_70k.npy")
@@ -80,13 +62,11 @@ if not phm_kmeans_dir.exists():
 if not subagg_kmeans_dir.exists():
     subagg_kmeans_dir.mkdir()
 
+
+## Parameters/other things for rest of files
 N = 70000
 SUBSAMP_SIZE = 7000
 REPLICATIONS = 100
 CORES = 24
 hdbscan_mcs = 80
 leiden_resolution = 0.003575
-
-## R imports
-r_mclust = importr('mclust')
-r_phm = importr('PHM')

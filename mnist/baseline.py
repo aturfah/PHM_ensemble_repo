@@ -1,12 +1,11 @@
 import numpy as np
 from pathlib import Path
 from time import time
-from pathos.multiprocessing import ProcessPool
 
 from helpers import init_results, load_json, save_json, compute_results
 from config import leiden_resolution, hdbscan_mcs, REPLICATIONS, CORES, part1_base
 from model_fitting import fit_predict_mclust2, fit_predict_sc3s, fit_predict_leiden, fit_predict_kmeans, fit_predict_hdbscan #, fit_predict_skgmm
-
+from model_fitting import ProcessPool
 
 results_kmeans = init_results()
 results_gmmRand = init_results()
@@ -52,24 +51,3 @@ targets_vec = [
         (part1_base.format(mthd="kmeans", rpl="{rpl}"), fit_predict_kmeans, results_kmeans, {"n_clusters": 10}),
         (part1_base.format(mthd="hdbscan", rpl="{rpl}"), fit_predict_hdbscan, results_hdbscan, {"mcs": hdbscan_mcs})
     ]
-
-random_states = [x+1 for x in range(REPLICATIONS)]
-
-
-for tgt in targets_vec:
-    print("Fitting for {}".format(tgt[0]))
-    fname_base = [tgt[0]] * REPLICATIONS
-    fp_func = [tgt[1]] * REPLICATIONS
-    args = [tgt[3]] * REPLICATIONS
-    res_obj = tgt[2]
-    idx = 0
-    with ProcessPool(nodes=CORES) as pool:
-        for res in pool.uimap(loop_func_baseline_methods, random_states, fname_base, fp_func, args):
-            idx += 1
-            print("\tReplicate: {}".format(idx), end="\r")
-            for key in res_obj.keys():
-                res_obj[key].extend(res.get(key, []))
-
-        print("\n")
-
-print("Complete!")
