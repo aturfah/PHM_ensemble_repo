@@ -45,7 +45,7 @@ targets_vec = [
         # (part1_base.format(mthd="gmmKmeans", rpl="{rpl}"), fit_predict_skgmm, results_gmmKmeans, {"n_clusters": 10, "init": "kmeans"}),
         # (part1_base.format(mthd="gmmK++", rpl="{rpl}"), fit_predict_skgmm, results_gmmKpp, {"n_clusters": 10, "init": "k-means++"}),
         # (part1_base.format(mthd="sc3s5", rpl="{rpl}"), fit_predict_sc3s, results_sc3s5, {"n_clusters": 10, "n_runs": 5}),
-        (part1_base.format(mthd="mclust", rpl="{rpl}"), fit_predict_mclust2, results_gmmHier, {"n_clusters": 10}),
+        # (part1_base.format(mthd="mclust", rpl="{rpl}"), fit_predict_mclust2, results_gmmHier, {"n_clusters": 10}),
         (part1_base.format(mthd="sc3s50", rpl="{rpl}"), fit_predict_sc3s, results_sc3s50, {"n_clusters": 10, "n_runs": 50}),
         (part1_base.format(mthd="leiden", rpl="{rpl}"), fit_predict_leiden, results_leiden, {"resolution": leiden_resolution}),
         (part1_base.format(mthd="kmeans", rpl="{rpl}"), fit_predict_kmeans, results_kmeans, {"n_clusters": 10}),

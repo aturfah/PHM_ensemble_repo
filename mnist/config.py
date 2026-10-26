@@ -10,6 +10,8 @@ os.environ["OPENBLAS_NUM_THREADS"] = "1"
 
 ## Imports
 from pathlib import Path
+import rpy2
+import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
 
 ## R imports
@@ -34,6 +36,9 @@ phm_leiden_dir = file_directory.joinpath("70k_phm_leiden_replicates_tsne")
 subagg_leiden_dir = file_directory.joinpath("70k_phm_subaggLeiden_replicates_tsne")
 subagg_kmeans_dir = file_directory.joinpath("70k_phm_subaggKmeans_replicates_tsne")
 phm_kmeans_dir = file_directory.joinpath("70k_phm_Kmeans_replicates_tsne")
+
+if not file_directory.exists():
+    file_directory.mkdir()
 
 if not part1_directory.exists():
     part1_directory.mkdir()
@@ -66,7 +71,8 @@ if not subagg_kmeans_dir.exists():
 ## Parameters/other things for rest of files
 N = 70000
 SUBSAMP_SIZE = 7000
-REPLICATIONS = 100
-CORES = 24
+REPLICATIONS = 2
+# REPLICATIONS = 100
+CORES = 10
 hdbscan_mcs = 80
 leiden_resolution = 0.003575
