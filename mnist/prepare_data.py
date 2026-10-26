@@ -16,8 +16,8 @@ else:
     ## Set up Data tensor
     transform = tv.transforms.Compose([tv.transforms.ToTensor()])
     
-    train_data = tv.datasets.MNIST("data/train",train=True, download=False, transform = transform)
-    test_data = tv.datasets.MNIST("data/test",train=False, download=False, transform=transform)
+    train_data = tv.datasets.MNIST("data/train",train=True, download=True, transform = transform)
+    test_data = tv.datasets.MNIST("data/test",train=False, download=True, transform=transform)
     
     kwargs = {'num_workers': 1, 'pin_memory': False}
     
