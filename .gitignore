@@ -6,3 +6,4 @@ phm_env/
 *.pkl
 mnist/data/*
 mnist/__pycache__/
+mnist/.ipynb_checkpoints/
