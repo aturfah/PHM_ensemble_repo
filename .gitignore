@@ -7,3 +7,4 @@ phm_env/
 mnist/data/*
 mnist/__pycache__/
 mnist/.ipynb_checkpoints/
+mnist/output/
