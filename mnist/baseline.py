@@ -17,7 +17,7 @@ results_sc3s50 = init_results()
 results_leiden = init_results()
 results_hdbscan = init_results()
 
-def loop_func_baseline_methods(rs, fname_base, fp_func, args):
+def loop_func_baseline_methods(X, rs, fname_base, fp_func, args):
     fname = fname_base.format(rpl=rs)
     if Path(fname).exists():
         return load_json(fname)

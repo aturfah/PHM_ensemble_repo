@@ -3,6 +3,7 @@ from helpers import init_results
 from model_fitting import ProcessPool
 from time import time
 from multiprocessing import Manager
+from functools import partial
 
 from baseline import targets_vec, loop_func_baseline_methods
 from phm_single import loop_func_phm_single
@@ -10,7 +11,6 @@ from phm_ensemble_global import loop_func_ensemble_global
 from phm_ensemble_localized import loop_func_ensemble_localized
 
 from prepare_data import proj_tsne, sampleY_t
-X = proj_tsne
 
 ########################
 ### Baseline Methods ###
@@ -24,6 +24,8 @@ for tgt in targets_vec:
     args = [tgt[3]] * REPLICATIONS
     res_obj = tgt[2]
     idx = 0
+    loop_func_partial = partial(loop_func_baseline_methods, X=proj_tsne)
+
     with ProcessPool(nodes=CORES) as pool:
         for res in pool.uimap(loop_func_baseline_methods, random_states, fname_base, fp_func, args):
             idx += 1
