@@ -4,3 +4,5 @@ phm_env/
 *.png
 *.eps
 *.pkl
+mnist/data/*
+mnist/__pycache__/
