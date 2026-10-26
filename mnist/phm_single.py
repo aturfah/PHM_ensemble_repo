@@ -2,12 +2,12 @@ import numpy as np
 from pathlib import Path
 from time import time
 
-from config import part1_base, save_dir_phm
+from config import part1_base, save_dir_phm_single
 from helpers import load_json, save_json, compute_results
 from model_fitting import dill, robjects, convert_R_params_object2
 from PHM import PHM
 
-def loop_func_phm_single(random_state, pfx):
+def loop_func_phm_single(X, truth, random_state, pfx):
     ## Check if we've already run
     fname = part1_base.format(mthd="PHM_gmmHier", rpl=random_state)
     if Path(fname).exists():
@@ -15,7 +15,7 @@ def loop_func_phm_single(random_state, pfx):
         return out
 
     ## Load/prepare the density
-    dens_fname = "{base}/{pfx}{dim}_G50_r{rs}.RDS".format(base=save_dir_phm, 
+    dens_fname = "{base}/{pfx}{dim}_G50_r{rs}.RDS".format(base=save_dir_phm_single, 
                                                    pfx=pfx, 
                                                    dim=X.shape[1], 
                                                    rs=random_state)
@@ -53,7 +53,7 @@ def loop_func_phm_single(random_state, pfx):
     post_mat = phm_mclust.computePosterior(X, 10)
     labels = np.argmax(post_mat, 1).tolist()
 
-    res_repl = compute_results(labels)
+    res_repl = compute_results(labels, truth)
     res_repl["time"] = [elapsed_density + elapsed_phm]
     res_repl["time_density"] = [elapsed_density]
     res_repl["time_phm"] = [elapsed_phm]

@@ -17,7 +17,7 @@ results_sc3s50 = init_results()
 results_leiden = init_results()
 results_hdbscan = init_results()
 
-def loop_func_baseline_methods(X, rs, fname_base, fp_func, args):
+def loop_func_baseline_methods(X, truth, rs, fname_base, fp_func, args):
     fname = fname_base.format(rpl=rs)
     if Path(fname).exists():
         return load_json(fname)
@@ -29,7 +29,7 @@ def loop_func_baseline_methods(X, rs, fname_base, fp_func, args):
     if isinstance(labels, np.ndarray):
         labels = labels.tolist()
 
-    res_repl = compute_results(labels)
+    res_repl = compute_results(labels, truth)
     res_repl["time"] = [elapsed]
 
     try:

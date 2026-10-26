@@ -2,7 +2,7 @@ import numpy as np
 from pathlib import Path
 from time import time
 
-from config import SUBSAMP_SIZE, part1_base, subagg_leiden_dir
+from config import SUBSAMP_SIZE, part1_base, save_dir_localized_ensemble
 from helpers import load_json, save_json, compute_results
 from model_fitting import subaggDensityEstimation, leiden_ff, leiden_extract, dill
 from PHM import PHM
@@ -29,7 +29,7 @@ def loop_func_ensemble_localized(repl_idx, verbose=False, numCores=1, terminate_
     if verbose:
         print(repl_idx, "\tDensity Estimation")
 
-    density_time_fname = subagg_leiden_dir.joinpath("subaggLeiden_density_timing{}.npy".format(repl_idx))
+    density_time_fname = save_dir_localized_ensemble.joinpath("subaggLeiden_density_timing{}.npy".format(repl_idx))
     start = time()
     res = subaggDensityEstimation(
         X,
@@ -42,7 +42,7 @@ def loop_func_ensemble_localized(repl_idx, verbose=False, numCores=1, terminate_
         G=np.asarray([x for x in range(1, 11)]),
         threshold=1e-3,
         verbose=False,
-        save_directory=subagg_leiden_dir,
+        save_directory=save_dir_localized_ensemble,
         prefix="MNIST_subaggLeiden_R{REP}_{dim}".format(REP=repl_idx, dim=X.shape[1])
     )
     density_time = time() - start
@@ -55,8 +55,8 @@ def loop_func_ensemble_localized(repl_idx, verbose=False, numCores=1, terminate_
         return res
     
     ## Run PHM
-    phm_fname = subagg_leiden_dir.joinpath("PHM_repl{}.pkl".format(repl_idx))
-    phm_time_fname = subagg_leiden_dir.joinpath("PHM_repl{}_timing.npy".format(repl_idx))
+    phm_fname = save_dir_localized_ensemble.joinpath("PHM_repl{}.pkl".format(repl_idx))
+    phm_time_fname = save_dir_localized_ensemble.joinpath("PHM_repl{}_timing.npy".format(repl_idx))
     if phm_time_fname.exists():
         if verbose:
             print("\tLoading PHM from File")

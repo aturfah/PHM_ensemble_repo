@@ -2,7 +2,7 @@ import numpy as np
 from pathlib import Path
 from time import time
 
-from config import SUBSAMP_SIZE, part1_base, r_phm, save_dir_phm
+from config import SUBSAMP_SIZE, part1_base, r_phm, save_dir_global_ensemble
 from helpers import lock_print, load_json, save_json, compute_results
 from model_fitting import convert_R_params_object2, robjects, importr, numpy2ri, localconverter, dill
 from PHM import PHM
@@ -40,11 +40,11 @@ def loop_func_ensemble_global(idx, lock, pfx, verbose=True, terminate_fitting=Fa
                                                            G=np.array([x for x in range(1, 51)]),
                                                            numCores=1,
                                                            prefix=prefix,
-                                                           saveDir=str(save_dir_phm),
+                                                           saveDir=str(save_dir_global_ensemble),
                                                            verbose=False)
     timing_base = "mclustSubagg{cov}{num_pcs}_r{idx}_timing.npy"
     time_density = np.load(
-        save_dir_phm.joinpath(timing_base.format(cov="ALL", num_pcs=X.shape[1], idx=idx))
+        save_dir_global_ensemble.joinpath(timing_base.format(cov="ALL", num_pcs=X.shape[1], idx=idx))
     )
 
     if verbose:
@@ -56,10 +56,10 @@ def loop_func_ensemble_global(idx, lock, pfx, verbose=True, terminate_fitting=Fa
         return clusters_subagg
 
     # Fit and run PHM
-    phm_fname = save_dir_phm.joinpath(
+    phm_fname = save_dir_global_ensemble.joinpath(
         "PHM_{}.pkl".format(pfx.format(cov="ALL", num_pcs=X.shape[1], idx=idx))
     )
-    phm_time_fname = save_dir_phm.joinpath(
+    phm_time_fname = save_dir_global_ensemble.joinpath(
         "PHM_{}_time.pkl".format(pfx.format(cov="ALL", num_pcs=X.shape[1], idx=idx))
     )
     if phm_time_fname.exists():

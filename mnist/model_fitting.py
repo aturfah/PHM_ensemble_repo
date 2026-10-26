@@ -17,7 +17,7 @@ from rpy2.robjects.conversion import localconverter
 import dill
 from pathos.multiprocessing import ProcessPool
 
-from config import save_dir_phm, r_phm
+from config import save_dir_mclust, r_phm
 
 ################################################
 ## Fit/Predict functions for baseline methods ##
@@ -44,7 +44,7 @@ def fit_predict_mclust2(X, n_clusters=10, random_state=0):
     mcl <- Mclust(X, G=10)
     """
     ## Load the R file
-    fname = save_dir_phm.joinpath("mclustG{}_pred_r{}.npy".format(n_clusters, random_state))
+    fname = save_dir_mclust.joinpath("mclustG{}_pred_r{}.npy".format(n_clusters, random_state))
     if not fname.exists():
         raise FileNotFoundError(fname)
 

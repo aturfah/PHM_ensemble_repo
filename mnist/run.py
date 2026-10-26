@@ -1,9 +1,11 @@
-from config import REPLICATIONS, CORES
-from helpers import init_results
-from model_fitting import ProcessPool
+import numpy as np
 from time import time
 from multiprocessing import Manager
 from functools import partial
+
+from config import REPLICATIONS, CORES
+from helpers import init_results
+from model_fitting import ProcessPool
 
 from baseline import targets_vec, loop_func_baseline_methods
 from phm_single import loop_func_phm_single
@@ -24,10 +26,11 @@ for tgt in targets_vec:
     args = [tgt[3]] * REPLICATIONS
     res_obj = tgt[2]
     idx = 0
-    loop_func_partial = partial(loop_func_baseline_methods, X=proj_tsne)
 
+    loop_func = partial(loop_func_baseline_methods, proj_tsne, sampleY_t)
+    
     with ProcessPool(nodes=CORES) as pool:
-        for res in pool.uimap(loop_func_baseline_methods, random_states, fname_base, fp_func, args):
+        for res in pool.uimap(loop_func, random_states, fname_base, fp_func, args):
             idx += 1
             print("\tReplicate: {}".format(idx), end="\r")
             for key in res_obj.keys():
@@ -38,9 +41,6 @@ for tgt in targets_vec:
 print("==== Completed Baseline ====")
 
 
-raise RuntimeError("AAAAHHH")
-
-
 ##############################
 ### PHM (Single Replicate) ###
 ##############################
@@ -49,7 +49,8 @@ random_states = [x for x in range(1, 101)]
 pfx_list = REPLICATIONS * ["mclustALL"]
 idx = 0
 with ProcessPool(nodes=CORES) as pool:
-    for res in pool.uimap(loop_func_phm_single, random_states, pfx_list):
+    loop_func = partial(loop_func_phm_single, proj_tsne, sampleY_t)
+    for res in pool.uimap(loop_func, random_states, pfx_list):
         idx += 1
         print("Completed: {}".format(idx), end="\r")
         if res is None:
