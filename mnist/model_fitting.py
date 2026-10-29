@@ -167,34 +167,6 @@ def subaggDensityEstimation(X, replicates, subSampleSize, fit_func, extract_func
     return output
 
 ## Fit/Extract Functions for Leiden and GMM
-def skGMM_ff(X, G_range, rs, **kwargs):
-    ## Fit candidate models
-    np.random.seed(rs)
-    temp = []
-    for G in G_range:
-        temp.append(GMM(n_components=G, **kwargs).fit(X))
-
-    ## Model with lowest BIC
-    bic_vec = [x.bic(X) for x in temp]
-    idx = np.argmin(bic_vec)
-    return temp[idx]
-
-def skGMM_extract(res, wgt_scale):
-    clusters = []
-    densities = []
-    for idx in range(res.n_components):
-        cov = res.covariances_[idx]
-        mean = res.means_[idx]
-        wgt = res.weights_[idx]
-    
-        density, sampler = mvgmm_generator([wgt], [mean], [cov])
-        densities.append(density)
-        clusters.append(
-            PHMCluster([wgt * wgt_scale], [sampler], [density])
-        )
-    
-    return clusters
-
 def leiden_ff(X, rs=1, resolution=0.05, weighting_neighbors=1, **kwargs):
     ## Run Leiden clustering
     np.random.seed(rs)
