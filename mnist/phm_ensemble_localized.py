@@ -16,7 +16,7 @@ def loop_func_ensemble_localized(X, truth, repl_idx, verbose=False, numCores=1, 
 
     ## Load replicate if already ran
     if not terminate_fitting:
-        fname = part1_base.format(mthd="PHM_subaggLeiden", rpl=repl_idx)
+        fname = part1_base.format(mthd="PHM_ensemble_localized", rpl=repl_idx)
         if Path(fname).exists():
             if verbose:
                 print(repl_idx, "\tLoading file: {}".format(fname))

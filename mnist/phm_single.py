@@ -9,7 +9,7 @@ from PHM import PHM
 
 def loop_func_phm_single(X, truth, random_state, pfx):
     ## Check if we've already run
-    fname = part1_base.format(mthd="PHM_gmmHier", rpl=random_state)
+    fname = part1_base.format(mthd="phm_single", rpl=random_state)
     if Path(fname).exists():
         out = load_json(fname)
         return out

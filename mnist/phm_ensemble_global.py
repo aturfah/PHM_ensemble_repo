@@ -14,7 +14,7 @@ def loop_func_ensemble_global(X, truth, idx, lock, pfx, verbose=False, terminate
     if verbose:
         lock_print(lock, idx, "PHM Replicate", idx, flush=True)
 
-    fname = part1_base.format(mthd="PHMAll", rpl=idx)
+    fname = part1_base.format(mthd="PHM_ensemble_global", rpl=idx)
     ########################################
     #### Load if replicate has been run ####
     ########################################
