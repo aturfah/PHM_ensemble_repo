@@ -1,3 +1,8 @@
+## |Method      |   ARI|   NMI|   Acc|
+## |:-----------|-----:|-----:|-----:|
+## |Oracle      | 0.939| 0.926| 0.972|
+## |Hier. Clust | 0.789| 0.840| 0.888|
+
 require(mclust)
 require(PHM)
 require(aricode)
@@ -20,16 +25,21 @@ setwd(here)
 ensemble_directory = "output/70k_ensemble_global/"
 single_directory = "output/70k_single_PHM"
 mclust_directory = "output/70k_mclustG10/"
+
+if (!dir.exists("output")) dir.create("output")
+if (!dir.exists(ensemble_directory)) dir.create(ensemble_directory)
+if (!dir.exists(single_directory)) dir.create(single_directory)
+if (!dir.exists(mclust_directory)) dir.create(mclust_directory)
+
+
 gt_file = "output/gt_deltapmc_tsne_70k.RData"
 fname = "output/MNIST_tsne_70k.npy"
 X = np$load(fname)
 num_pcs = ncol(X)
 labels = np$load("output/MNIST_labels_70k.npy")
 
-print(dim(X))
-
-CORES <- 30
-REPLICATIONS <- 2
+CORES <- 32
+REPLICATIONS <- 10
 
 ## Implement cluster Accuracy equivalent to Python implementation
 cluster_accuracy <- function(y_true, y_pred) {
@@ -85,7 +95,6 @@ temp <- mclapply(1:REPLICATIONS, function(idx) {
 }, mc.cores=CORES)
 cat("Finished Single-Replicate PHM!\n")
 
-
 ## Mclust (GMM w/ hierarchical initialization) with G=10 fixed
 cat("Starting mclust w/ G=10!\n")
 temp <- mclapply(1:REPLICATIONS, function(idx) {
@@ -94,12 +103,14 @@ temp <- mclapply(1:REPLICATIONS, function(idx) {
   fname_time <- file.path(mclust_directory, paste0("mclustG10_timing_r", idx, ".npy"))
   
   if (file.exists(fname_pred)) return(idx)
+
   elapsed <- system.time({
     set.seed(idx)
     mclSingle <- Mclust(X, G=10)
   })
   np$save(fname_pred, mclSingle$classification)
   np$save(fname_time, unname(elapsed[3]))
+
   paramsSingle <- constructPmcParamsMclust(mclSingle)
   saveRDS(paramsSingle, file=fname_params)
   return(idx)
@@ -107,79 +118,81 @@ temp <- mclapply(1:REPLICATIONS, function(idx) {
 cat("Finished mclust w/ G=10!\n")
 
 
-################################
-### Oracle Density Estimator ###
-################################
-cat("Starting Oracle Density!\n")
-if (file.exists(gt_file)) {
-    load(gt_file)
-} else {
-    set.seed(1)
-    pars_gt = list()
-    for (lab in 0:9) {
-      print(lab)
-      lab_idx = which(labels == lab)
-      sub_X = X[lab_idx, ]
-    
-      class_weight = nrow(sub_X) / nrow(X)
-      sub_pars = constructPmcParamsSubAggMclust(sub_X, 25, 3000,
-                                                G=1:20, numCores=CORES)
-    
-      new_pars = list(
-        prob=numeric(length(sub_pars)),
-        mean=matrix(nrow=num_pcs, ncol=length(sub_pars)),
-        var=array(dim=c(num_pcs, num_pcs, length(sub_pars))),
-        class=lab
-      )
-      for (idx in 1:length(sub_pars)) {
-        new_pars$prob[idx] <- sub_pars[[idx]]$prob * class_weight
-        new_pars$mean[, idx] <- sub_pars[[idx]]$mean[, 1]
-        new_pars$var[, , idx] <- sub_pars[[idx]]$var[, , 1]
-      }
-    
-      pars_gt[[lab+1]] <- new_pars
-    }
-    
-    deltapmc <- computeMonteCarloDeltaPmcMatrix(pars_gt, 
-                                                mcSamples=1e6, 
-                                                batchSize=1e4,
-                                                numCores=CORES,
-                                                verbose=T)
-    
-    save(pars_gt, deltapmc, 
-         file=gt_file)
-}
 
-post_mat <- computePosteriorProbMatrix(pars_gt, X)
-oracle_labels <- apply(post_mat, 1, which.max)
-cat("Completed Oracle Density!\n")
+# ################################
+# ### Oracle Density Estimator ###
+# ################################
+# cat("Starting Oracle Density!\n")
+# if (file.exists(gt_file)) {
+#     load(gt_file)
+# } else {
+#     set.seed(1)
+#     pars_gt = list()
+#     for (lab in 0:9) {
+#       print(lab)
+#       lab_idx = which(labels == lab)
+#       sub_X = X[lab_idx, ]
+    
+#       class_weight = nrow(sub_X) / nrow(X)
+#       sub_pars = constructPmcParamsSubAggMclust(sub_X, 25, 3000,
+#                                                 G=1:20, numCores=CORES)
+    
+#       new_pars = list(
+#         prob=numeric(length(sub_pars)),
+#         mean=matrix(nrow=num_pcs, ncol=length(sub_pars)),
+#         var=array(dim=c(num_pcs, num_pcs, length(sub_pars))),
+#         class=lab
+#       )
+#       for (idx in 1:length(sub_pars)) {
+#         new_pars$prob[idx] <- sub_pars[[idx]]$prob * class_weight
+#         new_pars$mean[, idx] <- sub_pars[[idx]]$mean[, 1]
+#         new_pars$var[, , idx] <- sub_pars[[idx]]$var[, , 1]
+#       }
+    
+#       pars_gt[[lab+1]] <- new_pars
+#     }
+
+#     save(pars_gt,
+#          file=gt_file)
+# }
+
+# post_mat <- computePosteriorProbMatrix(pars_gt, X)
+# oracle_labels <- apply(post_mat, 1, which.max)
+# cat("Completed Oracle Density!\n")
 
 
-###############################
-### Hierarchical Clustering ###
-###############################
-cat("Started Hierarchical Clustering!\n")
-elapsed_hcl <- system.time({
-  hcl <- fastcluster::hclust(
-    dist(X), method="ward.D2"
-  )  
-})
+# # deltapmc <- computeMonteCarloDeltaPmcMatrix(pars_gt, 
+# #                                             mcSamples=1e6, 
+# #                                             batchSize=1e4,
+# #                                             numCores=CORES,
+# #                                             verbose=T)
+    
 
-hclust_labels <- cutree(hcl, 10)
-cat("Completed Hierarchical Clustering!\n")
+# ###############################
+# ### Hierarchical Clustering ###
+# ###############################
+# cat("Started Hierarchical Clustering!\n")
+# elapsed_hcl <- system.time({
+#   hcl <- fastcluster::hclust(
+#     dist(X), method="ward.D2"
+#   )  
+# })
 
-print(knitr::kable(data.frame(
-    Method=c("Oracle", "Hier. Clust"),
-    ARI=c(
-        ARI(factor(labels), factor(oracle_labels)),
-        ARI(factor(labels), factor(hclust_labels))
-    ),
-    NMI=c(
-        NMI(factor(labels), factor(oracle_labels)),
-        NMI(factor(labels), factor(hclust_labels))
-    ),
-    Acc=c(
-        cluster_accuracy(labels, oracle_labels),
-        cluster_accuracy(labels, hclust_labels)
-    )
-), digits=3))
+# hclust_labels <- cutree(hcl, 10)
+# cat("Completed Hierarchical Clustering!\n")
+
+# print(knitr::kable(data.frame(
+#     Method=c("Oracle", "Hier. Clust"),
+#     ARI=c(
+#         ARI(factor(labels), factor(oracle_labels)),
+#         ARI(factor(labels), factor(hclust_labels))
+#     ),
+#     NMI=c(
+#         NMI(factor(labels), factor(oracle_labels)),
+#         NMI(factor(labels), factor(hclust_labels))
+#     ),
+#     Acc=c(
+#         cluster_accuracy(labels, oracle_labels),
+#         cluster_accuracy(labels, hclust_labels)
+#     )
+# ), digits=3))

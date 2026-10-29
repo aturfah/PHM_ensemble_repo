@@ -20,6 +20,7 @@ r_phm = importr('PHM')
 
 ## File directories
 file_directory = Path("output/")
+images_directory = file_directory.joinpath("images")
 raw_path = file_directory.joinpath("MNIST_raw_70k.npy")
 labels_path = file_directory.joinpath("MNIST_labels_70k.npy")
 pca_path = file_directory.joinpath("MNIST_pca_70k.npy")
@@ -27,19 +28,16 @@ tsne_path = file_directory.joinpath("MNIST_tsne_70k.npy")
 
 baseline_directory = file_directory.joinpath("70k_baseline/")
 part1_base = str(baseline_directory.joinpath("{mthd}_tsne_repl{rpl}.json"))
-# save_dir = file_directory.joinpath("70k_subagg_gmm_tsne/")
 save_dir_global_ensemble = file_directory.joinpath("70k_ensemble_global/")
 save_dir_phm_single = file_directory.joinpath("70k_single_PHM/")
 save_dir_mclust = file_directory.joinpath("70k_mclustG10")
 save_dir_localized_ensemble = file_directory.joinpath("70k_ensemble_localized/")
-# phm_gmm_dir = file_directory.joinpath("70k_phm_gmm_replicates_tsne")
-# phm_skgmm_dir = file_directory.joinpath("70k_phm_skgmm_replicates_tsne")
-# phm_leiden_dir = file_directory.joinpath("70k_phm_leiden_replicates_tsne")
-# subagg_kmeans_dir = file_directory.joinpath("70k_phm_subaggKmeans_replicates_tsne")
-# phm_kmeans_dir = file_directory.joinpath("70k_phm_Kmeans_replicates_tsne")
 
 if not file_directory.exists():
     file_directory.mkdir()
+
+if not images_directory.exists():
+    images_directory.mkdir()
 
 if not baseline_directory.exists():
     baseline_directory.mkdir()
@@ -52,6 +50,9 @@ if not save_dir_global_ensemble.exists():
 
 if not save_dir_localized_ensemble.exists():
     save_dir_localized_ensemble.mkdir()
+
+if not save_dir_mclust.exists():
+    save_dir_mclust.mkdir()
 
 # if not phm_leiden_dir.exists():
 #     phm_leiden_dir.mkdir()
@@ -78,8 +79,8 @@ if not save_dir_localized_ensemble.exists():
 ## Parameters/other things for rest of files
 N = 70000
 SUBSAMP_SIZE = 7000
-REPLICATIONS = 2
+REPLICATIONS = 10
 # REPLICATIONS = 100
-CORES = 10
+CORES = 30
 hdbscan_mcs = 80
 leiden_resolution = 0.003575

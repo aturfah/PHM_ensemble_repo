@@ -10,14 +10,13 @@ from PHM import PHM
 #####################################
 ### Subagg GMM (sklearn: k-means) ###
 #####################################
-def loop_func_ensemble_localized(repl_idx, verbose=False, numCores=1, terminate_fitting=False, replicates=50, subsamp_size=SUBSAMP_SIZE):
+def loop_func_ensemble_localized(X, truth, repl_idx, verbose=False, numCores=1, terminate_fitting=False, replicates=50, subsamp_size=SUBSAMP_SIZE):
     if verbose:
         print(repl_idx, "### REPLICATE {} ###".format(repl_idx))
 
     ## Load replicate if already ran
     if not terminate_fitting:
         fname = part1_base.format(mthd="PHM_subaggLeiden", rpl=repl_idx)
-        print(fname)
         if Path(fname).exists():
             if verbose:
                 print(repl_idx, "\tLoading file: {}".format(fname))
@@ -85,7 +84,7 @@ def loop_func_ensemble_localized(repl_idx, verbose=False, numCores=1, terminate_
     post_mat = phm_temp.computePosterior(X, 10)
     labels = np.argmax(post_mat, 1).tolist()
 
-    res_repl = compute_results(labels)
+    res_repl = compute_results(labels, truth)
     res_repl["time_density"] = [float(density_time)]
     res_repl["time_phm"] = [float(phm_time)]
     res_repl["time"] = [res_repl["time_density"][0] + res_repl["time_phm"][0]]

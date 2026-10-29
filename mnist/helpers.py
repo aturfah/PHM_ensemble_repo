@@ -63,26 +63,32 @@ def gen_results_dict(results, mthd, q=[0.05, 0.95]):
     out["ARI"] = np.round(np.mean(results["ARI"]), 3)
     if len(results["ARI"]) > 1:
         # out["ARI Range"] = "({:.2f}, {:.2f})".format( *np.quantile(results["ARI"], q))
-        out["ARI Range"] = np.round(np.std(results["ARI"]), 3)
+        out["ARI SD"] = np.round(np.std(results["ARI"]), 3)
+        if out["ARI SD"] == 0:
+            out["ARI SD"] = "---"
     else:
-        out["ARI Range"] = "---"
+        out["ARI SD"] = "---"
 
     # out["NMI"] = np.round(np.median(results["NMI"]), 3)
     out["NMI"] = np.round(np.mean(results["NMI"]), 3)
     if len(results["NMI"]) > 1:
         # out["NMI Range"] = "({:.2f}, {:.2f})".format( *np.quantile(results["NMI"], q, method="inverted_cdf") )
-        out["NMI Range"] = np.round(np.std(results["NMI"]), 3)
+        out["NMI SD"] = np.round(np.std(results["NMI"]), 3)
+        if out["NMI SD"] == 0:
+            out["NMI SD"] = "---"
     else:
-        out["NMI Range"] = "---"
+        out["NMI SD"] = "---"
 
-    acc = [cluster_accuracy(sampleY_t, x) for x in results["predicted"]]
-    # out["Acc"] = np.round(np.median(acc), 3)
-    out["Acc"] = np.round(np.mean(acc), 3)
-    if len(acc) > 1:
+
+    # out["Acc"] = np.round(np.median(results["Acc"]), 3)
+    out["Acc"] = np.round(np.mean(results["Acc"]), 3)
+    if len(results["Acc"]) > 1:
         # out["Acc Range"] = "({:.2f}, {:.2f})".format( *np.quantile(acc, q, method="inverted_cdf") )
-        out["Acc Range"] = np.round(np.std(acc), 3)
+        out["Acc SD"] = np.round(np.std(results["Acc"]), 3)
+        if out["Acc SD"] == 0:
+            out["Acc SD"] = "---"
     else:
-        out["Acc Range"] = "---"
+        out["Acc SD"] = "---"
     
     return out
 

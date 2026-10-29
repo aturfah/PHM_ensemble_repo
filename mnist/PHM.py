@@ -1,6 +1,6 @@
 import numpy as np
-from PHMCluster import deltaPmc, PHMCluster, pmc, computePosterior
-from typing import List, Callable
+from PHMCluster import deltaPmc, PHMCluster, computePosterior
+from typing import List #, Callable
 from copy import deepcopy
 import scipy
 import pandas as pd
@@ -8,7 +8,7 @@ from itertools import product
 
 import plotnine as p9
 
-from pprint import pprint
+# from pprint import pprint
 
 class PHM:
     def __init__(self, distbn:List[PHMCluster], scaling):
@@ -248,6 +248,9 @@ class PHM:
             height = -1 * np.log(height)
         elif scale_heights == "log10":
             height = -1 * np.log10(height)
+        elif scale_heights == "d*":
+            # function(x) -1 * log1p(1/x)
+            height = np.log1p([1/x for x in height])
 
         ## Slight height offset so that things are guaranteed to not be at same height
         height += np.array([x for x in range(len(height))]) * 1e-6
@@ -447,11 +450,16 @@ class PHM:
                 threshold:float=0, 
                 plot_lims:tuple = None,
                 phm:bool=True,
-                scale_axis=False):
+                scale_axis=False,
+                grid_color = "#000000",
+                grid_size = 0.1,
+                subset_index=None):
         self._prepareVisData(initK, scale_heights=scale_heights, group_probs=group_probs, threshold=threshold)
         if initK is None:
             initK = self.K
 
+        if subset_index is None:
+            subset_index = [x for x in range(initK)]
 
         if phm is True:
             mat = np.zeros((initK, initK))
@@ -484,16 +492,15 @@ class PHM:
                             Z=lambda df: np.log10(df["Z"].where(df["Z"] > 0)))
                     )
 
-        if plot_lims is None:
-            plot_lims = [np.min(mat_long["Z"]), np.max(mat_long["Z"])]
-
-        mid_point = (plot_lims[0] + plot_lims[1]) / 2
-
         if scale_axis:
             alpha_vec = self.recoverParams(initK, ["prob"])["prob"]
-            alpha_vec = alpha_vec[self.order_x]
+            indices = np.flatnonzero(np.isin(self.order_x, subset_index))
+            posn_order = [self.order_x[i] for i in indices]
+            alpha_vec = alpha_vec[posn_order]
+            alpha_vec = alpha_vec / np.sum(alpha_vec)
         else:
             alpha_vec = [1/initK for _ in range(initK)]
+            posn_order = list(self.order_x)
 
         cumul_posn = np.concatenate(([0], np.cumsum(alpha_vec)))
         centers = (cumul_posn[1:] + cumul_posn[:-1]) / 2
@@ -501,10 +508,15 @@ class PHM:
         ## Construct matrix
         mat_long = mat_long.assign(
             Z_mod=lambda df: np.where(df['X'] == df['Y'], "--", df['Z']),
-            X=lambda df: pd.Categorical(df['X'], categories=self.order_x, ordered=True),
-            Y=lambda df: pd.Categorical(df['Y'], categories=self.order_x, ordered=True)
-        )
+            X=lambda df: pd.Categorical(df['X'], categories=posn_order, ordered=True),
+            Y=lambda df: pd.Categorical(df['Y'], categories=posn_order, ordered=True)
+        ).dropna(subset=["X", "Y"])
 
+        if plot_lims is None:
+            plot_lims = [np.min(mat_long["Z"]), np.max(mat_long["Z"])]
+
+        mid_point = (plot_lims[0] + plot_lims[1]) / 2
+        
         mat_long['X_idx'] = mat_long['X'].cat.codes
         mat_long['Y_idx'] = mat_long['Y'].cat.codes
         mat_long['X_left'] = cumul_posn[mat_long['X_idx']]
@@ -515,9 +527,8 @@ class PHM:
         mat_long['Y_right'] = cumul_posn[mat_long['Y_idx'] + 1]
         mat_long['Y_width'] = mat_long['Y_right'] - mat_long['Y_left']
         mat_long['Y_center'] = (mat_long['Y_right'] + mat_long['Y_left']) / 2
-
+        
         ## Visualize
-        gridColor = "#000000"
         plt = (p9.ggplot(mat_long, 
                         p9.aes(x='X_center', 
                                y='Y_center', 
@@ -525,7 +536,7 @@ class PHM:
                                height='Y_width', 
                                fill='Z')) + 
             # p9.ggplot(mat_long, p9.aes(x='X', y='Y', fill='Z')) + \
-            p9.geom_tile(color=gridColor) + 
+            p9.geom_tile(color=grid_color, size=grid_size) + 
             p9.scale_fill_gradient2(
                 low="#0000FF",
                 midpoint=mid_point,
@@ -533,7 +544,8 @@ class PHM:
                 breaks=[plot_lims[0], plot_lims[1]], 
                 limits=tuple(plot_lims),
                 labels=lambda _: ["Low", "High"],
-                name="Similarity"
+                name="Similarity",
+                guide=p9.guide_colorbar()
             )  + \
             p9.theme_bw()  + 
             p9.coord_flip()  + 
@@ -544,13 +556,13 @@ class PHM:
             p9.scale_x_continuous(
                 limits=(0, 1),
                 breaks=centers,
-                labels=self.order_x,
+                labels=posn_order,
                 expand=(0, 0)
             ) + 
             p9.scale_y_continuous(
                 limits=(0, 1),
                 breaks=centers,
-                labels=self.order_x,
+                labels=posn_order,
                 expand=(0, 0)
             ) + 
             p9.theme(

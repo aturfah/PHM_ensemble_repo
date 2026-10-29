@@ -10,7 +10,7 @@ from PHM import PHM
 #####################################
 ### Subagg GMM (mclust All covar) ###
 #####################################
-def loop_func_ensemble_global(idx, lock, pfx, verbose=True, terminate_fitting=False, replicates=50, subsamp_size=SUBSAMP_SIZE):
+def loop_func_ensemble_global(X, truth, idx, lock, pfx, verbose=False, terminate_fitting=False, replicates=50, subsamp_size=SUBSAMP_SIZE):
     if verbose:
         lock_print(lock, idx, "PHM Replicate", idx, flush=True)
 
@@ -93,7 +93,7 @@ def loop_func_ensemble_global(idx, lock, pfx, verbose=True, terminate_fitting=Fa
         lock_print(lock, idx, "\tComputing Posterior", flush=True)
     post_mat = phm_gauss.computePosterior(X, 10)
     labels = np.argmax(post_mat, 1).tolist()
-    res_repl = compute_results(labels)
+    res_repl = compute_results(labels, truth)
     res_repl["time_density"] = [float(time_density)]
     res_repl["time_phm"] = [phm_gauss_time]
     res_repl["time"] = [res_repl["time_phm"][0] + res_repl["time_density"][0]]
