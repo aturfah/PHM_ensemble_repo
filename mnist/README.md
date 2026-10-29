@@ -3,6 +3,7 @@
 Code provided to replicate the MNIST analysis. Generally to run please execute scripts in the following order.
 
 ```
+## Install necessary packages
 Rscript mnist_density_estimation.R
 python run_cluster_performance.py
 python run_phm_visualizations.py 
@@ -19,11 +20,11 @@ For ease of use this is an initial Python implementation of the [`PHM` R package
 - `PHM.py`: Implements the PHM algorithm and associated visualizations. Also allows for evaluations along the merging process, e.g., compute the Posterior matrix at a given value of *K*.
 
 
-## General use
+## General analysis functions and settings
 
-- `config.py`: Necessary imports/configuration settings, prepares file directories for different outputs
-- `prepare_data.py`: Implements functions to download and preprocess the MNIST data
-- `helpers.py`: Implements json saving/loading functions, multiprocess-safe printing, as well as functions for initializing/calculating performance
+- `config.py`: Necessary imports/configuration settings, prepares file directories for different outputs.
+- `prepare_data.py`: Implements functions to download and preprocess the MNIST data.
+- `helpers.py`: Implements json saving/loading functions, multiprocess-safe printing, as well as functions for initializing/calculating performance.
 
 ## Comparison to baseline methods
 
@@ -34,7 +35,7 @@ For ease of use this is an initial Python implementation of the [`PHM` R package
 - `phm_single.py`, `phm_ensemble_global.py`, `phm_ensemble_localized.py`: Implements the functions to run the PHM algorithm on the corresponding density estimate. Generates cluster output.
 
 
-## PHM Dendrogram + Clustering 
+## PHM dendrogram and subclustering  analysis
 
 - `run_phm_visualizations`: Loads the first PHM-ensemble (global) replicate and generates the corresponding dendrogram/heatmap visualization. Also generates drill-down image for subcluster analysis.
-- `vis_helpers.py`: Implements the digit-grid visualization for subcluster analysis
+- `vis_helpers.py`: Implements the digit-grid visualization for subcluster analysis.
