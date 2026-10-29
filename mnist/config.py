@@ -79,8 +79,8 @@ if not save_dir_mclust.exists():
 ## Parameters/other things for rest of files
 N = 70000
 SUBSAMP_SIZE = 7000
-REPLICATIONS = 10
-# REPLICATIONS = 100
+# REPLICATIONS = 10
+REPLICATIONS = 100
 CORES = 30
 hdbscan_mcs = 80
 leiden_resolution = 0.003575

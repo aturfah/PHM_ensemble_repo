@@ -39,7 +39,8 @@ num_pcs = ncol(X)
 labels = np$load("output/MNIST_labels_70k.npy")
 
 CORES <- 32
-REPLICATIONS <- 10
+# REPLICATIONS <- 10
+REPLICATIONS <- 100
 
 ## Implement cluster Accuracy equivalent to Python implementation
 cluster_accuracy <- function(y_true, y_pred) {
