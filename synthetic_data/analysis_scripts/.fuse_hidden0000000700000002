@@ -1,0 +1,28 @@
+# 04_two_spirals_analysis.R
+#
+# Runs all 8 methods on the two-spirals example and prints the resulting
+# ARI table to screen. Requires two_spirals_3000_short_v2.rds in this
+# same directory -- run 04_two_spirals_sim.R first if it isn't there yet.
+
+source("methods_lib.R")
+
+dat <- readRDS("../sim_data/two_spirals_3000_short_v2.rds")
+X <- dat$X; y <- dat$y
+trueK <- length(unique(y))
+label <- "two_spirals"
+cat(sprintf("\n===== Two Spirals (n=%d, true K=%d) =====\n", nrow(X), trueK))
+
+phm <- fit_phm_ensemble(X, G = 20:50, label = label)
+r_phm <- phm_partition(phm, X, y, trueK)
+
+r_km <- run_kmeanspp(X, y, trueK)
+r_wd <- run_ward(X, y, trueK)
+r_sl <- run_single_linkage(X, y, trueK)
+r_mc <- run_mclust_fixed(X, y, trueK)
+r_hdb <- run_hdbscan_widest_plateau(X, y, trueK, label = label)
+r_lei <- run_leiden_grid(X, y, trueK, label = label)
+r_opt <- run_optics_widest_plateau(X, y, trueK, label = label)
+
+print_ari_table("Two Spirals",
+  c("PHM", "k-means++", "Hierarchical (Ward)", "Hierarchical (single)", "mclust", "HDBSCAN", "Leiden", "OPTICS"),
+  c(r_phm$ari, r_km$ari, r_wd$ari, r_sl$ari, r_mc$ari, r_hdb$ari, r_lei$ari, r_opt$ari))
