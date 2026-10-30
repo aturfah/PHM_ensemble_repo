@@ -2,12 +2,12 @@
 
 The synthetic datasets used to benchmark PHM-ensemble and 7 baseline clustering methods include
 
-    + Double ring
-    + Crescent moons
-    + Unequal-variance blobs
-    + Two spirals
-    + Compound
-    + High-dim overlap
++ Double ring
++ Crescent moons
++ Unequal-variance blobs
++ Two spirals
++ Compound
++ High-dim overlap
 
 Another example, double ring of cliques, with multiresolution structure is used to test PHM-ensemble and Leiden algorithm.	  
 
