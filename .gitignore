@@ -8,3 +8,7 @@ mnist/data/*
 mnist/__pycache__/
 mnist/.ipynb_checkpoints/
 mnist/output/
+
+hiha/__pycache__/
+hiha/.ipynb_checkpoints/
+hiha/output/
