@@ -12,3 +12,6 @@ mnist/output/
 hiha/__pycache__/
 hiha/.ipynb_checkpoints/
 hiha/output/
+hiha/PHM.py
+hiha/PHMCluster.py
+hiha/distbn_helpers.py
