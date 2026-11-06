@@ -1,0 +1,287 @@
+PHM ensemble method comparison -- analysis run on Fri Oct  9 18:48:19 EDT 2026 (M=5, rho=1.0)
+
+===== analysis_scripts/01_double_rings_analysis.R =====
+
+===== Double Rings (n=3000, true K=2, M=5, rho=1.00) =====
+[double_rings rep1] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_rings] PHM replicate 1/5: G=26 (model=EEV), loglik=-13634.73 (no Stage 2)
+[double_rings rep2] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_rings] PHM replicate 2/5: G=25 (model=EEV), loglik=-13660.56 (no Stage 2)
+[double_rings rep3] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_rings] PHM replicate 3/5: G=27 (model=EEV), loglik=-13620.93 (no Stage 2)
+[double_rings] PHM replicate 4/5: G=24 (model=EEV), loglik=-13687.62 (no Stage 2)
+[double_rings rep5] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_rings] PHM replicate 5/5: G=26 (model=EEV), loglik=-13634.08 (no Stage 2)
+[double_rings] PHM: fitting PHMv2 on 128 pooled components...
+[double_rings] HDBSCAN: widest K=2 plateau spans minPts [4, 144] (width=141) -> picked minPts=74
+[double_rings] Leiden: best among K=2 settings: k=15, resolution=0.01 -> ARI=1.0000
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[double_rings] OPTICS: widest K=2 plateau at minPts=5 (width=5) -> xi=0.33, noise=99.5%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: Double Rings ====
+                method    ARI
+                   PHM 1.0000
+ Hierarchical (single) 1.0000
+               HDBSCAN 1.0000
+                Leiden 1.0000
+                mclust 0.0013
+             k-means++ 0.0008
+   Hierarchical (Ward) 0.0003
+                OPTICS 0.0000
+
+===== analysis_scripts/02_crescent_moons_analysis.R =====
+
+===== Crescent Moons (n=3000, true K=2, M=5, rho=1.00) =====
+[crescent_moons] PHM replicate 1/5: G=14 (model=EEV), loglik=-1938.91 (no Stage 2)
+[crescent_moons] PHM replicate 2/5: G=12 (model=EEV), loglik=-1970.87 (no Stage 2)
+[crescent_moons] PHM replicate 3/5: G=12 (model=EEV), loglik=-1971.06 (no Stage 2)
+[crescent_moons] PHM replicate 4/5: G=12 (model=EEV), loglik=-1970.91 (no Stage 2)
+[crescent_moons] PHM replicate 5/5: G=11 (model=EEV), loglik=-2002.13 (no Stage 2)
+[crescent_moons] PHM: fitting PHMv2 on 61 pooled components...
+[crescent_moons] HDBSCAN: widest K=2 plateau spans minPts [6, 200] (width=195) -> picked minPts=103
+[crescent_moons] Leiden: best among K=2 settings: k=10, resolution=0.01 -> ARI=1.0000
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[crescent_moons] OPTICS: widest K=2 plateau at minPts=50 (width=7) -> xi=0.06, noise=0.1%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: Crescent Moons ====
+                method    ARI
+                   PHM 1.0000
+ Hierarchical (single) 1.0000
+                Leiden 1.0000
+                OPTICS 0.9947
+               HDBSCAN 0.9650
+                mclust 0.5030
+             k-means++ 0.2571
+   Hierarchical (Ward) 0.1911
+
+===== analysis_scripts/03_unequal_variance_blobs_analysis.R =====
+
+===== Unequal-Variance Blobs (n=3000, true K=3, M=5, rho=1.00) =====
+[unequal_variance_blobs] PHM replicate 1/5: G=3 (model=VII), loglik=-11995.66 (no Stage 2)
+[unequal_variance_blobs] PHM replicate 2/5: G=3 (model=VII), loglik=-11995.64 (no Stage 2)
+[unequal_variance_blobs] PHM replicate 3/5: G=3 (model=VII), loglik=-11995.64 (no Stage 2)
+[unequal_variance_blobs] PHM replicate 4/5: G=3 (model=VII), loglik=-11995.65 (no Stage 2)
+[unequal_variance_blobs] PHM replicate 5/5: G=3 (model=VII), loglik=-11995.64 (no Stage 2)
+[unequal_variance_blobs] PHM: fitting PHMv2 on 15 pooled components...
+[unequal_variance_blobs] HDBSCAN: widest K=3 plateau spans minPts [11, 200] (width=190) -> picked minPts=105
+[unequal_variance_blobs] Leiden: best among K=3 settings: k=50, resolution=0.05 -> ARI=0.9500
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[unequal_variance_blobs] OPTICS: widest K=3 plateau at minPts=105 (width=3) -> xi=0.04, noise=0.0%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: Unequal-Variance Blobs ====
+                method    ARI
+                   PHM 0.9607
+                mclust 0.9607
+                Leiden 0.9500
+   Hierarchical (Ward) 0.9424
+                OPTICS 0.9281
+             k-means++ 0.8439
+               HDBSCAN 0.8082
+ Hierarchical (single) 0.0000
+
+===== analysis_scripts/04_two_spirals_analysis.R =====
+
+===== Two Spirals (n=3000, true K=2, M=5, rho=1.00) =====
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=40 at upper boundary of G<=40 -- extending search to 41:45
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=45 at upper boundary of G<=45 -- extending search to 46:50
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=50 at upper boundary of G<=50 -- extending search to 51:55
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=55 at upper boundary of G<=55 -- extending search to 56:60
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=60 at upper boundary of G<=60 -- extending search to 61:65
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=65 at upper boundary of G<=65 -- extending search to 66:70
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=70 at upper boundary of G<=70 -- extending search to 71:75
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=75 at upper boundary of G<=75 -- extending search to 76:80
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=80 at upper boundary of G<=80 -- extending search to 81:85
+[two_spirals rep1] mclust_auto_extend: BIC-optimal G=85 at upper boundary of G<=85 -- extending search to 86:90
+[two_spirals] PHM replicate 1/5: G=85 (model=EEV), loglik=-18355.28 (no Stage 2)
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=40 at upper boundary of G<=40 -- extending search to 41:45
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=45 at upper boundary of G<=45 -- extending search to 46:50
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=50 at upper boundary of G<=50 -- extending search to 51:55
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=55 at upper boundary of G<=55 -- extending search to 56:60
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=60 at upper boundary of G<=60 -- extending search to 61:65
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=65 at upper boundary of G<=65 -- extending search to 66:70
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=70 at upper boundary of G<=70 -- extending search to 71:75
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=75 at upper boundary of G<=75 -- extending search to 76:80
+[two_spirals rep2] mclust_auto_extend: BIC-optimal G=80 at upper boundary of G<=80 -- extending search to 81:85
+[two_spirals] PHM replicate 2/5: G=80 (model=VEV), loglik=-18397.24 (no Stage 2)
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=40 at upper boundary of G<=40 -- extending search to 41:45
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=45 at upper boundary of G<=45 -- extending search to 46:50
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=50 at upper boundary of G<=50 -- extending search to 51:55
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=55 at upper boundary of G<=55 -- extending search to 56:60
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=60 at upper boundary of G<=60 -- extending search to 61:65
+[two_spirals rep3] mclust_auto_extend: BIC-optimal G=65 at upper boundary of G<=65 -- extending search to 66:70
+[two_spirals] PHM replicate 3/5: G=69 (model=VEV), loglik=-18747.13 (no Stage 2)
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=40 at upper boundary of G<=40 -- extending search to 41:45
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=45 at upper boundary of G<=45 -- extending search to 46:50
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=50 at upper boundary of G<=50 -- extending search to 51:55
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=55 at upper boundary of G<=55 -- extending search to 56:60
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=60 at upper boundary of G<=60 -- extending search to 61:65
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=65 at upper boundary of G<=65 -- extending search to 66:70
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=70 at upper boundary of G<=70 -- extending search to 71:75
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=75 at upper boundary of G<=75 -- extending search to 76:80
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=80 at upper boundary of G<=80 -- extending search to 81:85
+[two_spirals rep4] mclust_auto_extend: BIC-optimal G=85 at upper boundary of G<=85 -- extending search to 86:90
+[two_spirals] PHM replicate 4/5: G=85 (model=EEV), loglik=-18410.40 (no Stage 2)
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=40 at upper boundary of G<=40 -- extending search to 41:45
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=45 at upper boundary of G<=45 -- extending search to 46:50
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=50 at upper boundary of G<=50 -- extending search to 51:55
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=55 at upper boundary of G<=55 -- extending search to 56:60
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=60 at upper boundary of G<=60 -- extending search to 61:65
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=65 at upper boundary of G<=65 -- extending search to 66:70
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=70 at upper boundary of G<=70 -- extending search to 71:75
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=75 at upper boundary of G<=75 -- extending search to 76:80
+[two_spirals rep5] mclust_auto_extend: BIC-optimal G=80 at upper boundary of G<=80 -- extending search to 81:85
+[two_spirals] PHM replicate 5/5: G=80 (model=EEV), loglik=-18503.38 (no Stage 2)
+[two_spirals] PHM: fitting PHMv2 on 399 pooled components...
+[two_spirals] HDBSCAN: widest K=2 plateau spans minPts [15, 112] (width=98) -> picked minPts=63
+[two_spirals] Leiden: best among K=2 settings: k=30, resolution=0.01 -> ARI=1.0000
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[two_spirals] OPTICS: widest K=2 plateau at minPts=20 (width=2) -> xi=0.17, noise=48.9%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: Two Spirals ====
+                method    ARI
+                   PHM 1.0000
+ Hierarchical (single) 1.0000
+                Leiden 1.0000
+                OPTICS 0.9772
+               HDBSCAN 0.9643
+                mclust 0.0592
+   Hierarchical (Ward) 0.0371
+             k-means++ 0.0288
+
+===== analysis_scripts/05_compound_analysis.R =====
+
+===== Compound (n=3000, true K=4, M=5, rho=1.00) =====
+[compound rep1] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[compound] PHM replicate 1/5: G=25 (model=VVV), loglik=-7231.22 (no Stage 2)
+[compound] PHM replicate 2/5: G=18 (model=VVV), loglik=-7334.99 (no Stage 2)
+[compound] PHM replicate 3/5: G=24 (model=VVV), loglik=-7227.19 (no Stage 2)
+[compound] PHM replicate 4/5: G=17 (model=VVV), loglik=-7450.46 (no Stage 2)
+[compound] PHM replicate 5/5: G=21 (model=VVV), loglik=-7325.77 (no Stage 2)
+[compound] PHM: fitting PHMv2 on 105 pooled components...
+[compound] HDBSCAN: widest K=4 plateau spans minPts [19, 64] (width=46) -> picked minPts=41
+[compound] Leiden: best among K=4 settings: k=10, resolution=0.02 -> ARI=0.9407
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[compound] OPTICS: widest K=4 plateau at minPts=75 (width=1) -> xi=0.03, noise=0.0%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: Compound ====
+                method    ARI
+                Leiden 0.9407
+                   PHM 0.9376
+               HDBSCAN 0.7857
+                mclust 0.7158
+   Hierarchical (Ward) 0.6930
+             k-means++ 0.6621
+                OPTICS 0.5004
+ Hierarchical (single) 0.4741
+
+===== analysis_scripts/06_high_dim_overlap_analysis.R =====
+
+===== High-Dim Overlap (n=3000, d_raw=60 -> 4 PCs, true K=4, M=5, rho=1.00) =====
+[high_dim_overlap] PHM replicate 1/5: G=4 (model=EEI), loglik=-21574.17 (no Stage 2)
+[high_dim_overlap] PHM replicate 2/5: G=4 (model=EEI), loglik=-21574.17 (no Stage 2)
+[high_dim_overlap] PHM replicate 3/5: G=4 (model=EEI), loglik=-21574.17 (no Stage 2)
+[high_dim_overlap] PHM replicate 4/5: G=4 (model=EEI), loglik=-21574.17 (no Stage 2)
+[high_dim_overlap] PHM replicate 5/5: G=4 (model=EEI), loglik=-21574.17 (no Stage 2)
+[high_dim_overlap] PHM: fitting PHMv2 on 20 pooled components...
+[high_dim_overlap] HDBSCAN: widest K=4 plateau spans minPts [47, 57] (width=11) -> picked minPts=52
+[high_dim_overlap] Leiden: best among K=4 settings: k=50, resolution=0.08 -> ARI=0.9537
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[high_dim_overlap] OPTICS: widest K=4 plateau at minPts=30 (width=1) -> xi=0.01, noise=0.0%
+There were 50 or more warnings (use warnings() to see the first 50)
+
+==== ARI table: High-Dim Overlap ====
+                method    ARI
+                   PHM 0.9571
+                mclust 0.9562
+             k-means++ 0.9554
+                Leiden 0.9537
+   Hierarchical (Ward) 0.9090
+               HDBSCAN 0.2317
+                OPTICS 0.0062
+ Hierarchical (single) 0.0000
+
+===== analysis_scripts/double_ring_of_cliques_analysis.R =====
+n=3000, M=5 replicates, rho=1.00 (G starts at 1:25, auto-extends if needed)
+START 2026-10-09 19:26:50
+[double_ring_of_cliques rep1] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_ring_of_cliques rep1] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[double_ring_of_cliques rep1] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[double_ring_of_cliques] PHM replicate 1/5: G=36 (model=EII), loglik=-19291.36 (no Stage 2)
+[double_ring_of_cliques rep2] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_ring_of_cliques rep2] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[double_ring_of_cliques rep2] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[double_ring_of_cliques] PHM replicate 2/5: G=36 (model=EII), loglik=-19291.36 (no Stage 2)
+[double_ring_of_cliques rep3] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_ring_of_cliques rep3] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[double_ring_of_cliques rep3] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[double_ring_of_cliques] PHM replicate 3/5: G=36 (model=EII), loglik=-19291.36 (no Stage 2)
+[double_ring_of_cliques rep4] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_ring_of_cliques rep4] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[double_ring_of_cliques rep4] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[double_ring_of_cliques] PHM replicate 4/5: G=36 (model=EII), loglik=-19291.36 (no Stage 2)
+[double_ring_of_cliques rep5] mclust_auto_extend: BIC-optimal G=25 at upper boundary of G<=25 -- extending search to 26:30
+[double_ring_of_cliques rep5] mclust_auto_extend: BIC-optimal G=30 at upper boundary of G<=30 -- extending search to 31:35
+[double_ring_of_cliques rep5] mclust_auto_extend: BIC-optimal G=35 at upper boundary of G<=35 -- extending search to 36:40
+[double_ring_of_cliques] PHM replicate 5/5: G=36 (model=EII), loglik=-19291.36 (no Stage 2)
+[double_ring_of_cliques] PHM: fitting PHMv2 on 180 pooled components...
+STAGE1_2_DONE  total_components=180  total_time=84.6s
+K0 (pooled components) = 180, n = 3000, d = 2, true K = 36
+cutYK (K=36) = 4.3005, cutY2 (K=2) = 174.0058
+WROTE ../double_ring_of_cliques_phm_result.pdf
+
+[double_ring_of_cliques] computing PHM partition + Leiden grid search at K=36 (fine) and K=2 (coarse) ...
+[double_ring_of_cliques] Leiden: best among K=36 settings: k=10, resolution=0.01 -> ARI=1.0000
+Warning message:
+The `resolution_parameter` argument of `cluster_leiden()` is deprecated as of
+igraph 2.1.0.
+ℹ Please use the `resolution` argument instead. 
+[double_ring_of_cliques] Leiden: no setting recovered exactly K=2; using overall-best ARI: k=10, resolution=0.01 -> K_found=36, ARI=0.0549
+
+==== ARI table: double_ring_of_cliques -- fine structure (36 cliques) ====
+ method ARI
+    PHM   1
+ Leiden   1
+
+==== ARI table: double_ring_of_cliques -- coarse structure (2 rings) ====
+ method    ARI
+    PHM 1.0000
+ Leiden 0.0549
+ALL_DONE
