@@ -1,9 +1,10 @@
 # Human Immune Health Atlas Analysis Scripts
 
-Code provided to replicate the Human Immune Health Atlas (HIHA) analysis. Generally to run please execute scripts in the following order. Please see the MNIST folder for information on setting up the environment.
+Code provided to replicate the Human Immune Health Atlas (HIHA) analysis. Generally to run please execute scripts in the following order. Please see the MNIST folder for information on setting up the environment and installing the necessary packages.
+
+**Make sure to set the `R_HOME` environment variable in `config.py`**
 
 ```
-## Install necessary packages
 sh setup_symlinks.sh
 Rscript density_estimation.R
 python profile_phm.py
