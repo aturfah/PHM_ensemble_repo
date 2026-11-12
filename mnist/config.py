@@ -1,5 +1,6 @@
 ## Set directory for R installation
 import os
+## Example: /home/aturfah/.conda/envs/PHM_ensemble/lib/R/
 os.environ["R_HOME"] = "R/environment/location"
 
 ## Disable BLAS/LAPACK multithreading to prevent multiprocessing deadlocks
