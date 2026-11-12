@@ -123,77 +123,77 @@ cat("Finished mclust w/ G=10!\n")
 # ################################
 # ### Oracle Density Estimator ###
 # ################################
-# cat("Starting Oracle Density!\n")
-# if (file.exists(gt_file)) {
-#     load(gt_file)
-# } else {
-#     set.seed(1)
-#     pars_gt = list()
-#     for (lab in 0:9) {
-#       print(lab)
-#       lab_idx = which(labels == lab)
-#       sub_X = X[lab_idx, ]
+cat("Starting Oracle Density!\n")
+if (file.exists(gt_file)) {
+    load(gt_file)
+} else {
+    set.seed(1)
+    pars_gt = list()
+    for (lab in 0:9) {
+      print(lab)
+      lab_idx = which(labels == lab)
+      sub_X = X[lab_idx, ]
     
-#       class_weight = nrow(sub_X) / nrow(X)
-#       sub_pars = constructPmcParamsSubAggMclust(sub_X, 25, 3000,
-#                                                 G=1:20, numCores=CORES)
+      class_weight = nrow(sub_X) / nrow(X)
+      sub_pars = constructPmcParamsSubAggMclust(sub_X, 25, 3000,
+                                                G=1:20, numCores=CORES)
     
-#       new_pars = list(
-#         prob=numeric(length(sub_pars)),
-#         mean=matrix(nrow=num_pcs, ncol=length(sub_pars)),
-#         var=array(dim=c(num_pcs, num_pcs, length(sub_pars))),
-#         class=lab
-#       )
-#       for (idx in 1:length(sub_pars)) {
-#         new_pars$prob[idx] <- sub_pars[[idx]]$prob * class_weight
-#         new_pars$mean[, idx] <- sub_pars[[idx]]$mean[, 1]
-#         new_pars$var[, , idx] <- sub_pars[[idx]]$var[, , 1]
-#       }
+      new_pars = list(
+        prob=numeric(length(sub_pars)),
+        mean=matrix(nrow=num_pcs, ncol=length(sub_pars)),
+        var=array(dim=c(num_pcs, num_pcs, length(sub_pars))),
+        class=lab
+      )
+      for (idx in 1:length(sub_pars)) {
+        new_pars$prob[idx] <- sub_pars[[idx]]$prob * class_weight
+        new_pars$mean[, idx] <- sub_pars[[idx]]$mean[, 1]
+        new_pars$var[, , idx] <- sub_pars[[idx]]$var[, , 1]
+      }
     
-#       pars_gt[[lab+1]] <- new_pars
-#     }
+      pars_gt[[lab+1]] <- new_pars
+    }
 
-#     save(pars_gt,
-#          file=gt_file)
-# }
+    save(pars_gt,
+         file=gt_file)
+}
 
-# post_mat <- computePosteriorProbMatrix(pars_gt, X)
-# oracle_labels <- apply(post_mat, 1, which.max)
-# cat("Completed Oracle Density!\n")
+post_mat <- computePosteriorProbMatrix(pars_gt, X)
+oracle_labels <- apply(post_mat, 1, which.max)
+cat("Completed Oracle Density!\n")
 
 
-# # deltapmc <- computeMonteCarloDeltaPmcMatrix(pars_gt, 
-# #                                             mcSamples=1e6, 
-# #                                             batchSize=1e4,
-# #                                             numCores=CORES,
-# #                                             verbose=T)
+# deltapmc <- computeMonteCarloDeltaPmcMatrix(pars_gt, 
+#                                             mcSamples=1e6, 
+#                                             batchSize=1e4,
+#                                             numCores=CORES,
+#                                             verbose=T)
     
 
-# ###############################
-# ### Hierarchical Clustering ###
-# ###############################
-# cat("Started Hierarchical Clustering!\n")
-# elapsed_hcl <- system.time({
-#   hcl <- fastcluster::hclust(
-#     dist(X), method="ward.D2"
-#   )  
-# })
+###############################
+### Hierarchical Clustering ###
+###############################
+cat("Started Hierarchical Clustering!\n")
+elapsed_hcl <- system.time({
+  hcl <- fastcluster::hclust(
+    dist(X), method="ward.D2"
+  )  
+})
 
-# hclust_labels <- cutree(hcl, 10)
-# cat("Completed Hierarchical Clustering!\n")
+hclust_labels <- cutree(hcl, 10)
+cat("Completed Hierarchical Clustering!\n")
 
-# print(knitr::kable(data.frame(
-#     Method=c("Oracle", "Hier. Clust"),
-#     ARI=c(
-#         ARI(factor(labels), factor(oracle_labels)),
-#         ARI(factor(labels), factor(hclust_labels))
-#     ),
-#     NMI=c(
-#         NMI(factor(labels), factor(oracle_labels)),
-#         NMI(factor(labels), factor(hclust_labels))
-#     ),
-#     Acc=c(
-#         cluster_accuracy(labels, oracle_labels),
-#         cluster_accuracy(labels, hclust_labels)
-#     )
-# ), digits=3))
+print(knitr::kable(data.frame(
+    Method=c("Oracle", "Hier. Clust"),
+    ARI=c(
+        ARI(factor(labels), factor(oracle_labels)),
+        ARI(factor(labels), factor(hclust_labels))
+    ),
+    NMI=c(
+        NMI(factor(labels), factor(oracle_labels)),
+        NMI(factor(labels), factor(hclust_labels))
+    ),
+    Acc=c(
+        cluster_accuracy(labels, oracle_labels),
+        cluster_accuracy(labels, hclust_labels)
+    )
+), digits=3))
