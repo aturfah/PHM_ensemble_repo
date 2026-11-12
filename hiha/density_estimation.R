@@ -1,11 +1,6 @@
-# if (!require("BiocManager", quietly = TRUE))
-#     install.packages(c('BiocManager'), repos='https://cloud.r-project.org')
-
-# BiocManager::install("rhdf5")
-
-library(rhdf5)
-library(mclust)
-library(PHM)
+require(rhdf5)
+require(mclust)
+require(PHM)
 
 ## Set working directory to be mnist folder location
 args <- commandArgs(trailingOnly = FALSE)
