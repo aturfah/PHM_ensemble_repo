@@ -58,17 +58,3 @@ def fuzzy_contingency(class_labels, posterior_matrix, scale_rows=True):
         table = table / row_sums
 
     return pd.DataFrame(table, columns=unique_classes)
-
-def grid_figure_plot(plot_list, ncol=3):
-    rows = []
-    for i in range(0, len(plot_list), ncol):
-        chunk = plot_list[i : i + ncol]
-
-        while len(chunk) < ncol:
-            chunk.append(p9.composition.plot_spacer())
-
-        row_composed = reduce(lambda a, b: a | b, chunk)
-        rows.append(row_composed)
-
-    grid = reduce(lambda a, b: a / b, rows)
-    return grid

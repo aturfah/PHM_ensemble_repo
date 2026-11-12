@@ -1,5 +1,5 @@
 import os
-os.environ["R_HOME"] = "/home/aturfah/.conda/envs/mnist_phm/lib/R"
+os.environ["R_HOME"] = "R/environment/location"
 
 from pathlib import Path
 
